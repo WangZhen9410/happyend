@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XXL毕业快乐</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        .verification-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            margin: 20px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .verification-container h2 {
+            color: #2563eb;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .verification-container input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .verification-container input:focus {
+            border-color: #2563eb;
+        }
+
+        .verification-container button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .verification-container button:hover {
+            background: #2563eb;
+        }
+
+        .error-message {
+            color: #dc2626;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        #mainContent {
+            display: none;
+        }
+
+        .container {
+            max-width: 800px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            margin: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .title {
+            font-size: 3rem;
+            color: #2563eb;
+            font-weight: bold;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #3b82f6;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        .title.show, .subtitle.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .click-prompt {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            font-size: 1.2rem;
+            color: #2563eb;
+            z-index: 1000;
+            text-align: center;
+            opacity: 0;
+            animation: showAndHide 1s forwards;
+        }
+
+        @keyframes showAndHide {
+            0% { opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .blessing-text {
+            line-height: 2;
+            font-size: 1.2rem;
+            color: #1e40af;
+            text-align: justify;
+            margin-bottom: 30px;
+        }
+
+        .blessing-text p {
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            text-indent: 2em;
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        .blessing-text p.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .blessing-text p:nth-child(1) { animation: none; }
+        .blessing-text p:nth-child(2) { animation: none; }
+        .blessing-text p:nth-child(3) { animation: none; }
+        .blessing-text p:nth-child(4) { animation: none; }
+        .blessing-text p:nth-child(5) { animation: none; }
+
+        .decorations {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background: #3b82f6;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: twinkle 3s infinite;
+        }
+
+        .star:nth-child(1) {
+            width: 20px;
+            height: 20px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .star:nth-child(2) {
+            width: 15px;
+            height: 15px;
+            top: 20%;
+            right: 15%;
+            animation-delay: 1s;
+        }
+
+        .star:nth-child(3) {
+            width: 25px;
+            height: 25px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 2s;
+        }
+
+        .star:nth-child(4) {
+            width: 18px;
+            height: 18px;
+            bottom: 10%;
+            right: 10%;
+            animation-delay: 1.5s;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #60a5fa;
+            animation: fall 4s infinite linear;
+        }
+
+        .confetti:nth-child(5) {
+            left: 5%;
+            animation-delay: 0s;
+            background: #3b82f6;
+        }
+
+        .confetti:nth-child(6) {
+            left: 25%;
+            animation-delay: 1s;
+            background: #1d4ed8;
+        }
+
+        .confetti:nth-child(7) {
+            left: 45%;
+            animation-delay: 2s;
+            background: #2563eb;
+        }
+
+        .confetti:nth-child(8) {
+            left: 65%;
+            animation-delay: 0.5s;
+            background: #1e40af;
+        }
+
+        .confetti:nth-child(9) {
+            left: 85%;
+            animation-delay: 1.5s;
+            background: #60a5fa;
+        }
+
+        .final-message {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #2563eb;
+            font-weight: bold;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        .final-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .blessing-text {
+                font-size: 1rem;
+            }
+            
+            .final-message {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="verification-container" id="verificationBox">
+        <h2>请回答问题</h2>
+        <p>我是谁？</p>
+        <input type="text" id="answerInput" placeholder="请输入答案">
+        <button onclick="checkAnswer()">确认</button>
+        <p class="error-message" id="errorMessage">答案不正确，请重试</p>
+    </div>
+
+    <div id="mainContent">
+        <div class="decorations">
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+        </div>
+
+        <div class="container">
+            <div class="header">
+                <h1 class="title">🎓 毕业快乐 🎓</h1>
+                <p class="subtitle">OMG叉叉艾欧</p>
+            </div>
+
+            <div id="clickPrompt" class="click-prompt">
+                点击页面继续...
+            </div>
+
+            <div class="blessing-text">
+                <p>&nbsp;&nbsp;恭喜你恭喜你成功逃离 "三角函数 + 圆锥曲线" 的魔窟，从此数学都将成为江湖传说～</p>
+                
+                <p>&nbsp;&nbsp;从此以后你的Schedule将不会被六大科填满。从此取而代之的是无尽的欢乐。</p>
+                
+                <p>&nbsp;&nbsp;你可以肆无忌惮的计划旅行，享受世界的美好，也可以将你心心念念的健身计划提上日程。</p>
+                
+                <p>&nbsp;&nbsp;但快乐之外我更盼着你在查成绩那天，能像拆惊喜盲盒般，收获 "金榜题名" 的高光时刻~</p>
+                
+                <p>&nbsp;&nbsp;不管怎样，现在请你把烦恼抛之脑后，猛猛玩就完事儿了！</p>
+            </div>
+
+            <div class="final-message">
+                🌟 毕业快乐léngléng 🌟
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkAnswer() {
+            const answer = document.getElementById('answerInput').value;
+            const mainContent = document.getElementById('mainContent');
+            const verificationBox = document.getElementById('verificationBox');
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (answer === '王振宇') {
+                mainContent.style.display = 'block';
+                verificationBox.style.display = 'none';
+                initClickToShow();
+            } else {
+                errorMessage.style.display = 'block';
+                document.getElementById('answerInput').value = '';
+            }
+        }
+
+        function initClickToShow() {
+            const title = document.querySelector('.title');
+            const subtitle = document.querySelector('.subtitle');
+            const paragraphs = document.querySelectorAll('.blessing-text p');
+            const finalMessage = document.querySelector('.final-message');
+            const clickPrompt = document.getElementById('clickPrompt');
+            let currentIndex = 0;
+            let showingTitle = true;
+            let showingSubtitle = false;
+            let showingParagraphs = false;
+
+            // 1秒后移除提示框
+            setTimeout(() => {
+                clickPrompt.style.display = 'none';
+            }, 1000);
+
+            function showNextElement() {
+                if (showingTitle) {
+                    title.classList.add('show');
+                    showingTitle = false;
+                    showingSubtitle = true;
+                    return;
+                }
+
+                if (showingSubtitle) {
+                    subtitle.classList.add('show');
+                    showingSubtitle = false;
+                    showingParagraphs = true;
+                    return;
+                }
+
+                if (showingParagraphs && currentIndex < paragraphs.length) {
+                    paragraphs[currentIndex].classList.add('show');
+                    currentIndex++;
+                    
+                    if (currentIndex === paragraphs.length) {
+                        showingParagraphs = false;
+                    }
+                    return;
+                }
+
+                if (!showingParagraphs && currentIndex === paragraphs.length) {
+                    finalMessage.classList.add('show');
+                    document.removeEventListener('click', showNextElement);
+                }
+            }
+
+            document.addEventListener('click', showNextElement);
+        }
+
+        // 添加回车键监听
+        document.getElementById('answerInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+    </script>
+</body>
+</html> 
